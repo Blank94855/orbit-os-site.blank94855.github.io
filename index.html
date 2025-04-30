@@ -2,138 +2,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OrbitOS - Fake OS</title>
-  <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png" />
+  <title>OrbitOS - Fake OS Experience</title>
+  <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png">
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #0f3d0f;
+      color: #ffffff;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #0d2b1e;
-      color: #d0f0dc;
       overflow-x: hidden;
     }
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1em 2em;
-      background-color: #0f3b26;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      padding: 2rem;
+      text-align: center;
+      animation: fadeInDown 1s ease-in-out;
     }
     header img {
-      height: 50px;
+      width: 100px;
     }
     header h1 {
-      font-size: 1.8em;
-      margin: 0;
+      margin-top: 1rem;
+      font-size: 2rem;
     }
-    .hero {
-      text-align: center;
-      padding: 4em 2em;
-      animation: fadeIn 2s ease-in;
-    }
-    .hero h2 {
-      font-size: 2.5em;
-      margin-bottom: 0.5em;
-    }
-    .hero button {
-      background-color: #1e5631;
+    .try-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 1rem 2rem;
+      background-color: #1a5e1a;
+      color: #fff;
       border: none;
-      padding: 1em 2em;
-      font-size: 1.2em;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
+      border-radius: 5px;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background-color 0.3s;
     }
-    .hero button:hover {
-      background-color: #28a745;
+    .try-btn:hover {
+      background-color: #267b26;
     }
-    .features {
+    section {
+      padding: 3rem 2rem;
       text-align: center;
-      padding: 3em 2em;
+      animation: fadeInUp 1.5s ease-in-out;
     }
-    .features img {
-      width: 80%;
-      max-width: 800px;
-      border-radius: 12px;
-      margin-bottom: 1em;
+    section img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin: 2rem 0;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
-    .features h3 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
+    section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
     }
-    .features p {
+    section p {
       max-width: 700px;
-      margin: auto;
-      font-size: 1.1em;
+      margin: 0 auto;
       line-height: 1.6;
     }
-    .commands {
-      background-color: #0f3b26;
-      padding: 2em;
-    }
-    .commands h4 {
+    footer {
+      padding: 2rem;
       text-align: center;
-      font-size: 1.8em;
-      margin-bottom: 1em;
     }
-    .commands ul {
-      list-style: none;
-      padding: 0;
-      max-width: 600px;
-      margin: auto;
-    }
-    .commands li {
-      margin: 1em 0;
-      background-color: #1e5631;
-      padding: 1em;
-      border-radius: 6px;
-    }
-    .support {
-      text-align: center;
-      padding: 3em 1em;
-    }
-    .support a {
-      background-color: #1e5631;
-      padding: 0.8em 1.5em;
-      border-radius: 6px;
+    .support-btn {
+      padding: 0.8rem 1.5rem;
+      background-color: #135013;
       color: white;
+      border: none;
+      border-radius: 5px;
       text-decoration: none;
-      font-size: 1.1em;
       transition: background 0.3s;
     }
-    .support a:hover {
-      background-color: #28a745;
+    .support-btn:hover {
+      background-color: #1d701d;
     }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-50px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(50px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" />
-    <h1>OrbitOS</h1>
-  </header>  <div class="hero">
-    <h2>The most realistic fake OS</h2>
-    <button onclick="window.location.href='https://blank94855.github.io/OrbitOS.github.io/'">Try Now</button>
-  </div>  <div class="features">
-    <img src="https://i.ibb.co/nshXJmKM" alt="OrbitOS Screenshot" />
-    <h3>Realistic Commands</h3>
-    <p>Execute commands like real terminals: simulate file access, program launching, hacking scenes and more.</p>
-  </div>  <div class="commands">
-    <h4>Example Commands</h4>
-    <ul>
-      <li><strong>run virus.exe</strong> - shows a simulated virus execution sequence</li>
-      <li><strong>open browser</strong> - fake browser loading screen</li>
-      <li><strong>launch rocket</strong> - simulated rocket launch animation</li>
-      <li><strong>hack NASA</strong> - cool fake hacking terminal output</li>
-      <li><strong>format c:</strong> - dramatic fake format sequence</li>
-    </ul>
-  </div>  <div class="support">
-    <a href="mailto:blank9485.net@gmail.com">Contact Support</a>
-  </div>
+    <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon">
+    <h1>OrbitOS - Your Fake OS Playground</h1>
+    <a class="try-btn" href="https://blank94855.github.io/OrbitOS.github.io/" target="_blank">Try Now</a>
+  </header>  <section>
+    <h2>Realistic Commands</h2>
+    <p>OrbitOS supports a wide variety of fake realistic terminal commands for simulation fun and pranks.</p>
+    <img src="https://i.ibb.co/nshXJmK/fake-terminal.png" alt="OrbitOS Command Screenshot">
+    <p>
+      <strong>Example Commands:</strong><br>
+      <code>sudo hack facebook</code> - (fake hacking effect)<br>
+      <code>format c:</code> - (fake format animation)<br>
+      <code>launch virus.exe</code> - (simulated malware launch)<br>
+      <code>echo Hello, World!</code> - (prints text)<br>
+      <code>open webcam</code> - (fake access cam)<br>
+      <code>shutdown -f</code> - (simulated shutdown)
+    </p>
+  </section>  <footer>
+    <a class="support-btn" href="mailto:blank9485.net@gmail.com">Contact Support</a>
+  </footer>
 </body>
 </html>
