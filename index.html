@@ -1,805 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OrbitOS - Next Generation Operating System</title>
-    <style>
-        :root {
-            --primary-color: #1a5c38;
-            --primary-light: #277a4e;
-            --accent-color: #80e080;
-            --dark-bg: #121b17;
-            --text-color: #e0e0e0;
-            --card-bg: #1a2a22;
-            --header-height: 70px;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
-        
-        header {
-            height: var(--header-height);
-            background-color: rgba(26, 92, 56, 0.9);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        header.scrolled {
-            background-color: rgba(18, 27, 23, 0.95);
-            height: 60px;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .logo-img {
-            width: 40px;
-            height: 40px;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-        }
-        
-        .logo-img:hover {
-            transform: rotate(20deg);
-        }
-        
-        .logo-text {
-            font-size: 1.8rem;
-            font-weight: 600;
-            background: linear-gradient(45deg, var(--text-color), var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        nav ul {
-            display: flex;
-            gap: 30px;
-            list-style: none;
-        }
-        
-        nav a {
-            color: var(--text-color);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            position: relative;
-            padding: 5px 0;
-            transition: color 0.3s ease;
-        }
-        
-        nav a:hover {
-            color: var(--accent-color);
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent-color);
-            transition: width 0.3s ease;
-        }
-        
-        nav a:hover::after {
-            width: 100%;
-        }
-        
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 8%;
-            background: radial-gradient(circle at center, #182a20, var(--dark-bg));
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="100%" height="100%" fill="none"/><path d="M0,100 Q50,-30 100,100 T200,100" stroke="rgba(128, 224, 128, 0.1)" fill="none" stroke-width="1"/><path d="M0,110 Q50,-20 100,110 T200,110" stroke="rgba(128, 224, 128, 0.07)" fill="none" stroke-width="1"/><path d="M0,90 Q50,-40 100,90 T200,90" stroke="rgba(128, 224, 128, 0.07)" fill="none" stroke-width="1"/></svg>');
-            opacity: 0.3;
-        }
-        
-        .hero-content {
-            max-width: 50%;
-            z-index: 1;
-            animation: fadeInLeft 1s ease-out;
-        }
-        
-        .hero-tagline {
-            color: var(--accent-color);
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
-        
-        .hero-title {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        
-        .hero-description {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            line-height: 1.6;
-            color: #bbb;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-        }
-        
-        .btn {
-            padding: 12px 30px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: var(--text-color);
-            border: none;
-            box-shadow: 0 5px 15px rgba(26, 92, 56, 0.4);
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--primary-light);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(26, 92, 56, 0.5);
-        }
-        
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-color);
-            border: 2px solid var(--primary-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: rgba(26, 92, 56, 0.2);
-        }
-        
-        .hero-image {
-            width: 45%;
-            z-index: 1;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transform: perspective(800px) rotateY(-5deg);
-            transition: transform 0.5s ease;
-            animation: fadeInRight 1s ease-out;
-        }
-        
-        .hero-image:hover {
-            transform: perspective(800px) rotateY(0);
-        }
-        
-        .features {
-            padding: 100px 8%;
-            background-color: #131e19;
-        }
-        
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-tagline {
-            color: var(--accent-color);
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 15px;
-            animation: pulse 2s infinite;
-        }
-        
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, #ffffff, var(--accent-color));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
-        
-        .section-description {
-            max-width: 700px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-            color: #bbb;
-            line-height: 1.6;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .feature-card {
-            background-color: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(39, 122, 78, 0.2);
-            cursor: pointer;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-            border-color: rgba(39, 122, 78, 0.5);
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover .feature-icon {
-            transform: scale(1.1);
-        }
-        
-        .feature-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-        
-        .feature-description {
-            color: #bbb;
-            line-height: 1.5;
-        }
-        
-        .commands {
-            padding: 100px 8%;
-            background-color: var(--dark-bg);
-            position: relative;
-        }
-        
-        .commands::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"><rect width="100%" height="100%" fill="none"/><circle cx="30" cy="30" r="1" fill="rgba(128, 224, 128, 0.1)"/></svg>');
-            opacity: 0.5;
-            z-index: 0;
-        }
-        
-        .commands-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 50px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .commands-image {
-            width: 45%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .commands-content {
-            width: 50%;
-        }
-        
-        .command-list {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        
-        .command-item {
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            border-left: 3px solid var(--primary-color);
-            transition: all 0.3s ease;
-        }
-        
-        .command-item:hover {
-            transform: translateX(5px);
-            border-left-color: var(--accent-color);
-            background-color: rgba(26, 42, 34, 0.8);
-        }
-        
-        .command-name {
-            font-family: 'Courier New', monospace;
-            color: var(--accent-color);
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        
-        .command-description {
-            color: #bbb;
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-        
-        .contact {
-            padding: 100px 8% 50px;
-            background-color: #121b17;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .contact::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            top: -50%;
-            left: -50%;
-            background: radial-gradient(ellipse at center, rgba(26, 92, 56, 0.2) 0%, rgba(18, 27, 23, 0) 70%);
-            z-index: 0;
-            animation: rotate 60s infinite linear;
-        }
-        
-        .contact-content {
-            max-width: 700px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .support-btn {
-            margin-top: 30px;
-            padding: 15px 40px;
-        }
-        
-        footer {
-            padding: 30px 8%;
-            background-color: #0f1713;
-            text-align: center;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .footer-link {
-            color: #bbb;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-link:hover {
-            color: var(--accent-color);
-        }
-        
-        .footer-bottom {
-            color: #777;
-            font-size: 0.9rem;
-            margin-top: 20px;
-        }
-        
-        /* Animations */
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px) perspective(800px) rotateY(-5deg);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) perspective(800px) rotateY(-5deg);
-            }
-        }
-        
-        @keyframes pulse {
-            0% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
-        
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
-        /* Terminal effect */
-        .terminal-line {
-            overflow: hidden;
-            white-space: nowrap;
-            animation: typing 3.5s steps(40, end);
-            margin-bottom: 8px;
-        }
-        
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-            to {
-                width: 100%;
-            }
-        }
-        
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-content, .commands-content {
-                max-width: 60%;
-            }
-            
-            .hero-image, .commands-image {
-                width: 35%;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            header {
-                padding: 0 4%;
-            }
-            
-            .logo-text {
-                font-size: 1.5rem;
-            }
-            
-            nav ul {
-                gap: 15px;
-            }
-            
-            nav a {
-                font-size: 0.95rem;
-            }
-            
-            .hero {
-                flex-direction: column;
-                padding: 120px 4% 50px;
-                height: auto;
-                gap: 50px;
-            }
-            
-            .hero-content, .commands-content {
-                max-width: 100%;
-                text-align: center;
-            }
-            
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-            
-            .hero-image, .commands-image {
-                width: 80%;
-            }
-            
-            .commands-container {
-                flex-direction: column-reverse;
-            }
-            
-            .commands-content {
-                width: 100%;
-                text-align: center;
-            }
-            
-            .feature-card {
-                text-align: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                width: 100%;
-                gap: 15px;
-            }
-            
-            .btn {
-                width: 100%;
-            }
-            
-            .hero-image, .commands-image {
-                width: 100%;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .feature-card {
-                padding: 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OrbitOS - Fake OS</title>
+  <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0d2b1e;
+      color: #d0f0dc;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1em 2em;
+      background-color: #0f3b26;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    header img {
+      height: 50px;
+    }
+    header h1 {
+      font-size: 1.8em;
+      margin: 0;
+    }
+    .hero {
+      text-align: center;
+      padding: 4em 2em;
+      animation: fadeIn 2s ease-in;
+    }
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 0.5em;
+    }
+    .hero button {
+      background-color: #1e5631;
+      border: none;
+      padding: 1em 2em;
+      font-size: 1.2em;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .hero button:hover {
+      background-color: #28a745;
+    }
+    .features {
+      text-align: center;
+      padding: 3em 2em;
+    }
+    .features img {
+      width: 80%;
+      max-width: 800px;
+      border-radius: 12px;
+      margin-bottom: 1em;
+    }
+    .features h3 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    .features p {
+      max-width: 700px;
+      margin: auto;
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    .commands {
+      background-color: #0f3b26;
+      padding: 2em;
+    }
+    .commands h4 {
+      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 1em;
+    }
+    .commands ul {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: auto;
+    }
+    .commands li {
+      margin: 1em 0;
+      background-color: #1e5631;
+      padding: 1em;
+      border-radius: 6px;
+    }
+    .support {
+      text-align: center;
+      padding: 3em 1em;
+    }
+    .support a {
+      background-color: #1e5631;
+      padding: 0.8em 1.5em;
+      border-radius: 6px;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1em;
+      transition: background 0.3s;
+    }
+    .support a:hover {
+      background-color: #28a745;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 <body>
-    <header id="header">
-        <div class="logo-container">
-            <img src="https://ibb.co/5X2Y1s1v" alt="OrbitOS Logo" class="logo-img" onerror="this.src='/api/placeholder/48/48'">
-            <div class="logo-text">OrbitOS</div>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#commands">Commands</a></li>
-                <li><a href="#contact">Support</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-tagline">Welcome to the Future</div>
-            <h1 class="hero-title">The Next Generation Terminal Operating System</h1>
-            <p class="hero-description">Experience unparalleled power and productivity with OrbitOS, the revolutionary terminal-based operating system designed for developers, power users, and efficiency enthusiasts.</p>
-            <div class="hero-buttons">
-                <a href="https://blank94855.github.io/OrbitOS.github.io/" class="btn btn-primary">Try Now</a>
-                <a href="#features" class="btn btn-secondary">Learn More</a>
-            </div>
-        </div>
-        <img src="/api/placeholder/600/400" alt="OrbitOS Interface" class="hero-image">
-    </section>
-
-    <section class="features" id="features">
-        <div class="section-header">
-            <div class="section-tagline">Why Choose OrbitOS</div>
-            <h2 class="section-title">Powerful Features</h2>
-            <p class="section-description">Discover what makes OrbitOS the most efficient and powerful terminal operating system available today.</p>
-        </div>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">Lightning Fast</h3>
-                <p class="feature-description">Experience instant response times with our optimized kernel architecture and minimal resource usage.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔒</div>
-                <h3 class="feature-title">Enhanced Security</h3>
-                <p class="feature-description">Built-in encryption, secure boot, and advanced permission systems keep your data safe from threats.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🧠</div>
-                <h3 class="feature-title">Smart Automation</h3>
-                <p class="feature-description">Automate repetitive tasks with intelligent scripting and workflow optimization tools.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔧</div>
-                <h3 class="feature-title">Customizable</h3>
-                <p class="feature-description">Tailor every aspect of your environment with extensive configuration options and themes.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔄</div>
-                <h3 class="feature-title">Seamless Integration</h3>
-                <p class="feature-description">Connect effortlessly with other platforms and tools through our robust API ecosystem.</p>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Advanced Analytics</h3>
-                <p class="feature-description">Monitor system performance and usage with detailed metrics and visualization tools.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="commands" id="commands">
-        <div class="commands-container">
-            <img src="https://ibb.co/nshXJmKM" alt="OrbitOS Commands Screenshot" class="commands-image" onerror="this.src='/api/placeholder/600/400'">
-            
-            <div class="commands-content">
-                <div class="section-tagline">Power at Your Fingertips</div>
-                <h2 class="section-title">Realistic Commands</h2>
-                <p class="section-description">OrbitOS offers an extensive command-line interface with powerful commands to streamline your workflow and boost productivity.</p>
-                
-                <div class="command-list">
-                    <div class="command-item">
-                        <div class="command-name">orbit --sys-scan</div>
-                        <p class="command-description">Performs a comprehensive system scan and generates detailed reports of your hardware and software.</p>
-                    </div>
-                    
-                    <div class="command-item">
-                        <div class="command-name">orbit --net-optimize</div>
-                        <p class="command-description">Automatically optimizes network settings for maximum speed and reliability.</p>
-                    </div>
-                    
-                    <div class="command-item">
-                        <div class="command-name">orbit --quantum-calc</div>
-                        <p class="command-description">Leverages quantum computing algorithms for complex mathematical calculations.</p>
-                    </div>
-                    
-                    <div class="command-item">
-                        <div class="command-name">orbit --ai-assist</div>
-                        <p class="command-description">Activates AI-powered assistance for natural language processing and task automation.</p>
-                    </div>
-                    
-                    <div class="command-item">
-                        <div class="command-name">orbit --secure-vault</div>
-                        <p class="command-description">Creates an encrypted storage space for sensitive files with multi-factor authentication.</p>
-                    </div>
-                    
-                    <div class="command-item">
-                        <div class="command-name">orbit --deep-clean</div>
-                        <p class="command-description">Performs comprehensive system cleanup, removing temporary files and optimizing storage.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="contact" id="contact">
-        <div class="contact-content">
-            <div class="section-tagline">Need Assistance?</div>
-            <h2 class="section-title">Get Support</h2>
-            <p class="section-description">Our team of expert developers is ready to help you with any questions or issues you may encounter while using OrbitOS.</p>
-            <a href="mailto:blank9485.net@gmail.com" class="btn btn-primary support-btn">Contact Support</a>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-links">
-            <a href="#" class="footer-link">Privacy Policy</a>
-            <a href="#" class="footer-link">Terms of Service</a>
-            <a href="#" class="footer-link">Documentation</a>
-            <a href="#" class="footer-link">Community</a>
-        </div>
-        <div class="footer-bottom">
-            &copy; 2025 OrbitOS. All rights reserved.
-        </div>
-    </footer>
-
-    <script>
-        // Header scroll effect
-        window.addEventListener('scroll', function() {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    window.scrollTo({
-                        top: target.offsetTop - 70,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-        
-        // Animation for feature cards on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
-        });
-        
-        document.querySelectorAll('.command-item').forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateX(-20px)';
-            item.style.transition = `opacity 0.4s ease ${index * 0.1}s, transform 0.4s ease ${index * 0.1}s`;
-            observer.observe(item);
-        });
-        
-        // Terminal typing effect
-        function startTypingEffect() {
-            const terminalLines = document.querySelectorAll('.terminal-line');
-            terminalLines.forEach((line, index) => {
-                line.style.width = '0';
-                setTimeout(() => {
-                    line.style.animation = `typing 2s steps(${line.textContent.length}, end) forwards`;
-                }, index * 2000);
-            });
-        }
-        
-        // Fix image sources if placeholders are needed
-        window.addEventListener('load', function() {
-            const logoImg = document.querySelector('.logo-img');
-            if (logoImg.naturalWidth === 0) {
-                logoImg.src = '/api/placeholder/48/48';
-            }
-            
-            const commandsImg = document.querySelector('.commands-image');
-            if (commandsImg.naturalWidth === 0) {
-                commandsImg.src = '/api/placeholder/600/400';
-            }
-        });
-    </script>
+  <header>
+    <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" />
+    <h1>OrbitOS</h1>
+  </header>  <div class="hero">
+    <h2>The most realistic fake OS</h2>
+    <button onclick="window.location.href='https://blank94855.github.io/OrbitOS.github.io/'">Try Now</button>
+  </div>  <div class="features">
+    <img src="https://i.ibb.co/nshXJmKM" alt="OrbitOS Screenshot" />
+    <h3>Realistic Commands</h3>
+    <p>Execute commands like real terminals: simulate file access, program launching, hacking scenes and more.</p>
+  </div>  <div class="commands">
+    <h4>Example Commands</h4>
+    <ul>
+      <li><strong>run virus.exe</strong> - shows a simulated virus execution sequence</li>
+      <li><strong>open browser</strong> - fake browser loading screen</li>
+      <li><strong>launch rocket</strong> - simulated rocket launch animation</li>
+      <li><strong>hack NASA</strong> - cool fake hacking terminal output</li>
+      <li><strong>format c:</strong> - dramatic fake format sequence</li>
+    </ul>
+  </div>  <div class="support">
+    <a href="mailto:blank9485.net@gmail.com">Contact Support</a>
+  </div>
 </body>
 </html>
