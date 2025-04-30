@@ -13,24 +13,18 @@
       overflow-x: hidden;
     }
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1em 2em;
-      background-color: #0f3b26;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-    }
-    header img {
-      height: 50px;
-    }
-    header h1 {
-      font-size: 1.8em;
-      margin: 0;
+      display: none;
     }
     .hero {
       text-align: center;
       padding: 4em 2em;
       animation: fadeIn 2s ease-in;
+    }
+    .hero img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 1em;
     }
     .hero h2 {
       font-size: 2.5em;
@@ -48,26 +42,6 @@
     }
     .hero button:hover {
       background-color: #28a745;
-    }
-    .features {
-      text-align: center;
-      padding: 3em 2em;
-    }
-    .features img {
-      width: 80%;
-      max-width: 800px;
-      border-radius: 12px;
-      margin-bottom: 1em;
-    }
-    .features h3 {
-      font-size: 2em;
-      margin-bottom: 0.5em;
-    }
-    .features p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.1em;
-      line-height: 1.6;
     }
     .commands {
       background-color: #0f3b26;
@@ -113,16 +87,10 @@
   </style>
 </head>
 <body>
-  <header>
+  <div class="hero">
     <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" />
-    <h1>OrbitOS</h1>
-  </header>  <div class="hero">
     <h2>The most realistic fake OS</h2>
     <button onclick="window.location.href='https://blank94855.github.io/OrbitOS.github.io/'">Try Now</button>
-  </div>  <div class="features">
-    <img src="https://i.ibb.co/nshXJMK/Screenshot-2024-06-09-215212.png" alt="OrbitOS Screenshot" />
-    <h3>Realistic Commands</h3>
-    <p>Execute commands like real terminals: simulate file access, program launching, hacking scenes and more.</p>
   </div>  <div class="commands">
     <h4>Example Commands</h4>
     <ul>
