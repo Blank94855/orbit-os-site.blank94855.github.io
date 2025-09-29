@@ -3,117 +3,187 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OrbitOS</title>
+  <title>OrbitOS | Terminal Simulator</title>
   <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
-    
+
+    :root {
+      --primary-cyan: #00b4d8;
+      --secondary-green: #00c853;
+      --bg-dark: #1a1c1e;
+      --header-bg: #2e3133;
+      --text-light: #e2e2e5;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(145deg, #141517, #1a1c1e);
-      color: #e2e2e5;
+      background: linear-gradient(145deg, #101214, #181a1c);
+      color: var(--text-light);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 1.5rem;
+      padding: 1rem;
     }
     .terminal-like-container {
-      background-color: #1a1c1e;
+      background-color: var(--bg-dark);
       border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      max-width: 680px;
+      width: 100%;
       overflow: hidden;
+      margin: auto;
     }
     .terminal-header {
-      background-color: #2e3133;
+      background-color: var(--header-bg);
       padding: 0.75rem 1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .prompt {
-      color: #00b4d8;
+    .prompt-text {
+      color: var(--primary-cyan);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      margin-right: 0.5rem;
-    }
-    .output p {
-      line-height: 1.6;
       font-size: 0.95rem;
-      margin-bottom: 0.75rem;
-    }
-    .output ul {
-      list-style-type: none;
-      padding: 0;
-    }
-    .output li {
-      margin-bottom: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .output strong {
-      color: #00c853;
+      margin-right: 0.5rem;
       font-weight: 500;
     }
-    .output a {
-      color: #00b4d8;
-      text-decoration: none;
+    .output-area {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .output-area h4 {
+        color: var(--secondary-green);
+        font-size: 1.1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .output-area ul {
+      list-style-type: none;
+      padding-left: 1rem;
+    }
+    .output-area li {
+      margin-bottom: 0.2rem;
+      position: relative;
+    }
+    .output-area li::before {
+        content: '•';
+        color: var(--primary-cyan);
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+    }
+    .output-area a {
+      color: var(--primary-cyan);
+      text-decoration: underline;
       transition: color 0.3s;
     }
-    .output a:hover {
-      color: #00c8f5;
+    .output-area a:hover {
+      color: #3b82f6;
     }
   </style>
 </head>
 <body>
-  <div class="terminal-like-container w-full max-w-2xl mx-auto md:p-8 p-6">
+  <div class="terminal-like-container">
+
     
     <div class="terminal-header flex items-center gap-2">
       <div class="w-3 h-3 bg-red-500 rounded-full"></div>
       <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
       <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+      <span class="text-xs text-gray-400 ml-2 font-mono">OrbitOS Terminal</span>
     </div>
+
     
-    
-    <div class="output p-6 md:p-8">
-      <div class="flex flex-col items-center text-center mb-10">
-        <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" class="w-24 h-24 rounded-full border-2 border-cyan-500 mb-6"/>
-        <h2 class="text-3xl font-bold text-white mb-2 font-mono">
+    <div class="output-area">
+
+      
+      <div class="flex flex-col items-center text-center mb-8">
+        <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" class="w-16 h-16 rounded-full border-2 border-cyan-500 mb-4"/>
+        <h1 class="text-3xl font-bold text-white mb-1 font-mono">
           OrbitOS
-        </h2>
-        <p class="text-lg text-gray-400 max-w-sm">A minimalistic fake operating system</p>
+        </h1>
+        <p class="text-xs text-gray-400">A minimalistic fake operating system built on JS, HTML and CSS</p>
       </div>
 
       
-      <div class="flex justify-center mb-12">
-        <a href="https://blank94855.github.io/OrbitOS.blank94855.github.io/ " target="_blank" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 shadow-lg">
-          Try Now
+      <div class="flex justify-center mb-10">
+        <a href="https://blank94855.github.io/OrbitOS.blank94855.github.io/ " target="_blank" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-3 px-8 rounded-full text-lg transition duration-300 transform hover:scale-105 shadow-xl">
+          Start OrbitOS 3.x <i class="fas fa-terminal ml-2"></i>
         </a>
       </div>
-
       
-      <div class="mb-12">
-        <h4 class="text-xl font-semibold mb-4 text-cyan-500 text-center font-mono">Example Commands</h4>
-        <div class="bg-gray-800 rounded-lg p-5">
-          <ul class="text-gray-300">
-            <li><span class="prompt">></span> <strong>run notavirus.zip</strong> - shows a simulated virus execution sequence</li>
-            <li><span class="prompt">></span> <strong>run browser</strong> - a classic browser</li>
-            <li><span class="prompt">></span> <strong>calc 1+1</strong> - calculate something</li>
-            <li><span class="prompt">></span> <strong>neofetch</strong> - shows system info</li>
-            <li><span class="prompt">></span> <strong>echo hi github</strong> - echo something</li>
-          </ul>
+      
+      <div>
+        <div class="flex items-start mb-2">
+          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">cat project_history.log</span>
         </div>
+        
+        <h4 class="mt-0">OrbitOS Project Log (july 2024 - Sep 2025)</h4>
+        
+        <p class="text-gray-300 mb-1">
+          <span class="text-yellow-400">V1.0 (Pre-Alpha):</span> Simple proof-of-concept. <span class="text-gray-400">(3 basic commands: neofetch, help, clear)</span>
+        </p>
+        <p class="text-gray-300 mb-1">
+          <span class="text-red-400">V2.0 FAILURE:</span> Attempted massive feature rollout but architecture remained broken. Code became messy, prioritizing aesthetics (stars, ugly colors) over stability. **Project Abandoned.**
+        </p>
+        <p class="text-gray-300">
+          <span class="text-cyan-400">V3.0+ beta:</span> Complete rewrite focusing on clean, modular code. Introduced stable command map, history, and advanced features (browser, calc). **Current stable version.**
+        </p>
       </div>
 
       
-      <div class="text-center">
-        <p class="text-gray-400 mb-4">
-          Need help? <br class="md:hidden" /> Contact support directly.
+      <div>
+        <div class="flex items-start mb-2 mt-6">
+          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">cat v4_roadmap.txt</span>
+        </div>
+
+        <h4 class="text-center font-bold text-2xl text-white my-4">Orbit OS 4.0 <span class="text-cyan-500">(Coming December 2025)</span></h4>
+        
+        <p class="text-gray-300 mb-2">
+          <span class="text-yellow-400">Focus:</span> Complete Graphical Interface, Performance, and Customization.
         </p>
-        <a href="mailto:blank9485.net@gmail.com" class="text-white bg-gray-700 hover:bg-gray-600 py-2 px-6 rounded-full transition duration-300 shadow-md">
-          Contact Support
-        </a>
+        <ul class="text-gray-300">
+          <li>New interface</li>
+          <li>Status bar icons: Functioning battery, date, and time displays.</li>
+          <li>Lockscreen: A proper welcome screen/li>
+          <li>Media Suite: Fully functional Music and Video Player applications.</li>
+          <li>Extended BIOS: Full system control for restarts and advanced functions.</li>
+        </ul>
+        <p class="text-gray-400 mt-4 text-xs">
+           * Note: V3.x will remain available via the <span class="text-yellow-400">dev > downgrade</span> command and get updated for a few months after V4.0 launch.
+        </p>
+      
+      <div class="mt-6 border-t border-gray-700 pt-6">
+        <div class="flex items-start mb-2">
+          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">whoami</span>
+        </div>
+
+        <p class="text-gray-300 mb-4">
+          <span class="text-cyan-400">Users (Active):</span> 100+ and growing. <br/>
+          <span class="text-cyan-400">Motto:</span> "It's not about being 'real,' it’s about putting in the work, experimenting, and learning along the way."
+        </p>
+
+        <div class="flex items-start mb-2">
+          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">contact --support</span>
+        </div>
+
+        <p class="text-gray-300">
+          Need help, found a bug, or just want to chat?
+          <a href="mailto:blank9485.net@gmail.com" class="text-white bg-gray-700 hover:bg-gray-600 py-1 px-4 rounded transition duration-300 inline-block mt-2 font-mono">
+            Email Support <i class="fas fa-envelope ml-1"></i>
+          </a>
+        </p>
       </div>
+      
+      <div class="flex items-start mt-6">
+        <span class="prompt-text">root@orbit:~$</span> <span class="text-white animate-pulse">|</span>
+      </div>
+
     </div>
   </div>
 </body>
