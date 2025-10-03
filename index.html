@@ -1,179 +1,369 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>OrbitOS | Terminal Simulator</title>
-  <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OrbitOS | Terminal Simulator</title>
+    <link rel="icon" href="https://i.ibb.co/5X2Y1s1v/icon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --background: #0d1117;
+            --surface: rgba(22, 27, 34, 0.85);
+            --outline: #30363d;
+            --glow: rgba(139, 148, 158, 0.2);
+            --on-surface: #c9d1d9;
+            --accent-primary: #58a6ff;
+            --accent-secondary: #8b949e;
+            --error: #f85149;
+            --success: #3fb950;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
 
-    :root {
-      --accent-primary: #58a6ff;
-      --accent-secondary: #8b949e;
-      --success: #3fb950;
-      --background: #0d1117;
-      --surface: #161b22;
-      --header-bg: #21262d;
-      --on-surface: #c9d1d9;
-      --outline: #30363d;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--background);
-      color: var(--on-surface);
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 1rem;
-    }
-    .terminal-like-container {
-      background-color: var(--surface);
-      border-radius: 16px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--outline);
-      border: 1px solid var(--outline);
-      max-width: 720px;
-      width: 100%;
-      overflow: hidden;
-      margin: auto;
-    }
-    .terminal-header {
-      background-color: var(--header-bg);
-      padding: 0.75rem 1rem;
-      border-bottom: 1px solid var(--outline);
-    }
-    .prompt-text {
-      color: var(--accent-secondary);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.95rem;
-      margin-right: 0.5rem;
-      font-weight: 500;
-    }
-    .output-area {
-      padding: 1.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-    .output-area h4 {
-        color: var(--accent-primary);
-        font-size: 1.1rem;
-        margin-top: 1.5rem;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-    }
-    .output-area p {
-      color: var(--on-surface);
-    }
-    .output-area a {
-      color: var(--accent-primary);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: all 0.3s;
-    }
-    .output-area a:hover {
-      border-bottom-color: var(--accent-primary);
-    }
-  </style>
+        html,
+        body {
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--background);
+            color: var(--on-surface);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: radial-gradient(ellipse at top, color-mix(in srgb, var(--background) 80%, black), var(--background));
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            padding: 1rem;
+        }
+
+        .terminal {
+            width: 100%;
+            max-width: 900px;
+            background-color: var(--surface);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border-radius: 12px;
+            box-shadow: 0 10px 50px var(--glow), 0 0 0 1px var(--outline);
+            border: 1px solid var(--outline);
+            font-family: var(--font-mono);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            margin: auto;
+        }
+
+        .terminal-header {
+            background-color: rgba(30, 35, 42, 0.7);
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--outline);
+            flex-shrink: 0;
+        }
+
+        .terminal-title {
+            color: var(--on-surface);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .terminal-controls {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .control-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .control-dot:nth-child(1) { background-color: #ff5f56; }
+        .control-dot:nth-child(2) { background-color: #ffbd2e; }
+        .control-dot:nth-child(3) { background-color: #27c93f; }
+
+        .output {
+            padding: 1.5rem;
+            flex-grow: 1;
+            overflow-y: auto;
+            line-height: 1.7;
+            font-size: 0.9rem;
+        }
+        
+        .output h1, .output h2, .output h3, .output h4, .output p, .output a, .output span {
+            color: var(--on-surface);
+        }
+
+        .highlight { color: var(--accent-primary); }
+        .highlight-secondary { color: var(--accent-secondary); }
+        
+        .command-line {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .prompt {
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+        
+        .cursor {
+            display: inline-block;
+            background-color: var(--on-surface);
+            width: 8px;
+            height: 1.2em;
+            animation: blink 1s step-end infinite;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            from, to { background-color: transparent; }
+            50% { background-color: var(--on-surface); }
+        }
+        
+        .intro-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .intro-header img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-primary);
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .intro-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .intro-header p {
+            font-size: 0.8rem;
+            color: var(--accent-secondary);
+        }
+        
+        .status-box {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--success);
+            background: rgba(63, 185, 80, 0.1);
+            margin-bottom: 2rem;
+        }
+        .status-box h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #3fb950;
+        }
+        .status-box p {
+            font-size: 0.9rem;
+            color: rgba(63, 185, 80, 0.8);
+        }
+        
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            align-items: center;
+        }
+        
+        .action-buttons a {
+            text-decoration: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .btn-primary {
+            background-color: #1f6feb;
+            font-size: 1.1rem;
+        }
+        .btn-primary:hover {
+            background-color: #388bfd;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(56, 139, 253, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: #30363d;
+            font-size: 0.9rem;
+        }
+        .btn-secondary:hover {
+            background-color: #484f58;
+        }
+        
+        .changelog h4 {
+            color: var(--accent-primary);
+            font-size: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .changelog .log-entry {
+            margin-bottom: 0.25rem;
+        }
+        
+        .log-entry .version-v1 { color: #e3b341; }
+        .log-entry .version-v2 { color: #f85149; }
+        .log-entry .version-v3 { color: #43bccd; }
+        .log-entry .version-v4 { color: #3fb950; }
+        .log-entry .comment { color: var(--accent-secondary); }
+        
+        .feature-list {
+            margin-top: 1.5rem;
+        }
+        .feature-item {
+            margin-bottom: 1.5rem;
+        }
+        .feature-item p:first-child {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        .feature-item p:last-child {
+            color: var(--accent-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .contact-section {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--outline);
+        }
+        
+        .contact-section .btn-contact {
+            text-decoration: none;
+            color: var(--on-surface);
+            background-color: #30363d;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+        
+        .contact-section .btn-contact:hover {
+            background-color: #484f58;
+        }
+        
+        @media (min-width: 640px) {
+            .action-buttons {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .action-buttons a {
+                width: auto;
+            }
+        }
+
+    </style>
 </head>
 <body>
-  <div class="terminal-like-container">
-
-    <div class="terminal-header flex items-center gap-2">
-      <div class="w-3 h-3 bg-red-500 rounded-full"></div>
-      <div class="w-3 h-3 bg-yellow-400 rounded-full"></div>
-      <div class="w-3 h-3 bg-green-500 rounded-full"></div>
-      <span class="text-xs text-gray-400 ml-2 font-mono">OrbitOS Terminal</span>
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <div class="control-dot"></div>
+                <div class="control-dot"></div>
+                <div class="control-dot"></div>
+            </div>
+            <span class="terminal-title">OrbitOS Terminal</span>
+        </div>
+        <div class="output">
+            <div class="intro-header">
+                <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" />
+                <h1>OrbitOS</h1>
+                <p>A minimalistic fake operating system built on JS, HTML and CSS</p>
+            </div>
+            <div class="status-box">
+                <h3>OrbitOS 4.0 Alpha 1 is out!</h3>
+                <p>Experience the next generation of OrbitOS today.</p>
+            </div>
+            <div class="action-buttons">
+                <a href="https://blank94855.github.io/OrbitOS--4.0-alpha.blank94855.github.io/" target="_blank" class="btn-primary">
+                    Start OrbitOS 4.0 <i class="fas fa-rocket ml-2"></i>
+                </a>
+                <a href="https://blank94855.github.io/OrbitOS.blank94855.github.io/" target="_blank" class="btn-secondary">
+                    Legacy 3.x <i class="fas fa-history ml-2"></i>
+                </a>
+            </div>
+            <div class="changelog">
+                <div class="command-line">
+                    <span class="prompt highlight-secondary">root@orbit:~$</span>
+                    <span>cat project_history.log</span>
+                </div>
+                <h4 style="margin-top:0;">OrbitOS Project Log (September 29, 2025)</h4>
+                <p class="log-entry"><span class="version-v1">V1.0 (Pre-Alpha):</span> Simple proof-of-concept. <span class="comment">(3 basic commands)</span></p>
+                <p class="log-entry"><span class="version-v2">V2.0 FAILURE:</span> Unstable architecture, messy code. <strong>Project Abandoned.</strong></p>
+                <p class="log-entry"><span class="version-v3">V3.x (Beta):</span> Complete rewrite focusing on clean, modular code. <strong>Previous stable version.</strong></p>
+                <p class="log-entry"><span class="version-v4">V4.0 ALPHA 1 (Current):</span> Major redesign and feature release. New architecture deployed.</p>
+            </div>
+            <div class="feature-list">
+                <div class="command-line" style="margin-top: 2rem;">
+                    <span class="prompt highlight-secondary">root@orbit:~$</span>
+                    <span>cat v4.0-alpha1_changelog.txt</span>
+                </div>
+                <div class="feature-item">
+                    <p>Complete UI Overhaul: The "Midnight Blue" Theme</p>
+                    <p>A new professional interface inspired by modern code editors. The sleek, dark theme is easy on the eyes and improves readability across the entire OS, from the lock screen to the terminal.</p>
+                </div>
+                <div class="feature-item">
+                    <p>In-Terminal Wikipedia API</p>
+                    <p>The 'wiki' command now fetches and displays article summaries directly inside the terminal. Get information faster without ever leaving the OS environment.</p>
+                </div>
+                <div class="feature-item">
+                    <p>Graphical System Information</p>
+                    <p>The 'fastfetch' command now launches a dedicated, movable window with detailed system specs, including build number, kernel version, and simulated hardware info.</p>
+                </div>
+                <div class="feature-item">
+                    <p>Full Feature Suite & Draggable Windows</p>
+                    <p>A complete set of tools including 'browser', 'tts', and 'translate' are fully integrated. Media players for both music and video now feature a sleek new design and can be dragged around the screen.</p>
+                </div>
+                <div class="feature-item">
+                    <p>Data Persistence & Customization</p>
+                    <p>Your custom username, chosen font, and login history are now saved between sessions using cookies. Use the 'setname', 'fonts', and 'reset' commands to manage your user profile.</p>
+                </div>
+            </div>
+            <div class="contact-section">
+                <div class="command-line">
+                    <span class="prompt highlight-secondary">root@orbit:~$</span>
+                    <span>contact --support</span>
+                </div>
+                <p>Need help, found a bug, or just want to chat?</p>
+                <a href="mailto:blank9485.net@gmail.com" class="btn-contact">
+                    Email Support <i class="fas fa-envelope ml-1"></i>
+                </a>
+            </div>
+            <div class="command-line" style="margin-top: 1.5rem;">
+                <span class="prompt highlight-secondary">root@orbit:~$</span>
+                <span class="cursor"></span>
+            </div>
+        </div>
     </div>
-
-    <div class="output-area">
-
-      <div class="flex flex-col items-center text-center mb-6">
-        <img src="https://i.ibb.co/5X2Y1s1v/icon.png" alt="OrbitOS Icon" class="w-16 h-16 rounded-full border-2 border-blue-500 mb-4"/>
-        <h1 class="text-3xl font-bold text-white mb-1 font-mono">OrbitOS</h1>
-        <p class="text-xs text-gray-400">A minimalistic fake operating system built on JS, HTML and CSS</p>
-      </div>
-      
-      <div class="text-center p-4 rounded-lg border border-green-500/50 bg-green-500/10 mb-8">
-        <h3 class="text-lg font-bold text-green-400">OrbitOS 4.0 Alpha 1 is out!</h3>
-        <p class="text-sm text-green-300/80">Experience the next generation of OrbitOS today.</p>
-      </div>
-
-      <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10">
-        <a href="https://blank94855.github.io/OrbitOS--4.0-alpha.blank94855.github.io/" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 shadow-xl w-full sm:w-auto text-center">
-          Start OrbitOS 4.0 <i class="fas fa-rocket ml-2"></i>
-        </a>
-        <a href="https://blank94855.github.io/OrbitOS.blank94855.github.io/" target="_blank" class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg text-md transition duration-300 w-full sm:w-auto text-center">
-          Legacy 3.x <i class="fas fa-history ml-2"></i>
-        </a>
-      </div>
-
-      <div>
-        <div class="flex items-start mb-2">
-          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">cat project_history.log</span>
-        </div>
-
-        <h4 class="mt-0">OrbitOS Project Log (September 29, 2025)</h4>
-
-        <p class="mb-1"><span class="text-yellow-400">V1.0 (Pre-Alpha):</span> Simple proof-of-concept. <span class="text-gray-400">(3 basic commands)</span></p>
-        <p class="mb-1"><span class="text-red-400">V2.0 FAILURE:</span> Unstable architecture, messy code. **Project Abandoned.**</p>
-        <p class="mb-1"><span class="text-cyan-400">V3.x (Beta):</span> Complete rewrite focusing on clean, modular code. **Previous stable version.**</p>
-        <p><span class="text-green-400">V4.0 ALPHA 1 (Current):</span> Major redesign and feature release. New architecture deployed.</p>
-      </div>
-
-      <div>
-        <div class="flex items-start mb-2 mt-8">
-          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">cat v4.0-alpha1_changelog.txt</span>
-        </div>
-        
-        <div class="space-y-6">
-            <div>
-                <p class="font-bold text-lg text-white">Complete UI Overhaul: The "Midnight Blue" Theme</p>
-                <p class="text-gray-400">A new professional interface inspired by modern code editors. The sleek, dark theme is easy on the eyes and improves readability across the entire OS, from the lock screen to the terminal.</p>
-            </div>
-            <div>
-                <p class="font-bold text-lg text-white">In-Terminal Wikipedia API</p>
-                <p class="text-gray-400">The 'wiki' command now fetches and displays article summaries directly inside the terminal. Get information faster without ever leaving the OS environment.</p>
-            </div>
-            <div>
-                <p class="font-bold text-lg text-white">Graphical System Information</p>
-                <p class="text-gray-400">The 'fastfetch' command now launches a dedicated, movable window with detailed system specs, including build number, kernel version, and simulated hardware info.</p>
-            </div>
-            <div>
-                <p class="font-bold text-lg text-white">Full Feature Suite & Draggable Windows</p>
-                <p class="text-gray-400">A complete set of tools including 'browser', 'tts', and 'translate' are fully integrated. Media players for both music and video now feature a sleek new design and can be dragged around the screen.</p>
-            </div>
-             <div>
-                <p class="font-bold text-lg text-white">Data Persistence & Customization</p>
-                <p class="text-gray-400">Your custom username, chosen font, and login history are now saved between sessions using cookies. Use the 'setname', 'fonts', and 'reset' commands to manage your user profile.</p>
-            </div>
-        </div>
-      </div>
-
-      <div class="mt-8 border-t border-gray-700 pt-6">
-        <div class="flex items-start mb-2">
-          <span class="prompt-text">root@orbit:~$</span> <span class="text-white">contact --support</span>
-        </div>
-
-        <p>
-          Need help, found a bug, or just want to chat?
-          <a href="mailto:blank9485.net@gmail.com" class="text-white bg-gray-700 hover:bg-gray-600 py-1 px-4 rounded transition duration-300 inline-block mt-2 font-mono">
-            Email Support <i class="fas fa-envelope ml-1"></i>
-          </a>
-        </p>
-      </div>
-
-      <div class="flex items-start mt-6">
-        <span class="prompt-text">root@orbit:~$</span> <span class="text-white animate-pulse">|</span>
-      </div>
-
-    </div>
-  </div>
 </body>
 </html>
-
 
